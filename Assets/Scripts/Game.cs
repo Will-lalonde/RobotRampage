@@ -35,20 +35,21 @@ public class Game : MonoBehaviour
             enemiesLeft++;
             gameUI.SetEnemyText(enemiesLeft);
         }
-         IEnumerator updateWaveTimer()
+    }
+
+    private IEnumerator updateWaveTimer()
+    {
+        while (!isGameOver)
         {
-            while (!isGameOver)
+            yield return new WaitForSeconds(1f);
+            waveCountdown--;
+            gameUI.SetWaveText(waveCountdown);
+            // Spawn next wave and restart count down
+            if (waveCountdown == 0)
             {
-                yield return new WaitForSeconds(1f);
-                waveCountdown--;
-                gameUI.SetWaveText(waveCountdown);
-                // Spawn next wave and restart count down
-                if (waveCountdown == 0)
-                {
-                    SpawnRobots();
-                    waveCountdown = 30;
-                    gameUI.ShowNewWaveText();
-                }
+                SpawnRobots();
+                waveCountdown = 30;
+                gameUI.ShowNewWaveText();
             }
         }
     }
